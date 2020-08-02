@@ -4,7 +4,7 @@ import java.nio.file.Files
 
 import javax.imageio.ImageIO
 
-class TestRunner(val input: String, val output: String, val cutoff: Int) {
+class TestRunner(val input: String, val output: String, val cutoff: Int) extends Runnable {
 
   private val inputDir: File = new File(input)
   private val images: List[File] = inputDir.listFiles.filter(x =>
@@ -13,7 +13,9 @@ class TestRunner(val input: String, val output: String, val cutoff: Int) {
       x.getName.endsWith(".jpeg")
   ).toList
 
-  def run(): Unit = {
+  override def run(): Unit = {
+    println("Thread " + Thread.currentThread().getName +
+      " is running.")
     images.foreach(process)
   }
 

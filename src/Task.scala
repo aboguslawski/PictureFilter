@@ -10,7 +10,8 @@ object Task extends App {
   val cutoff: Int = scanner.nextInt
 
   try{
-    new TestRunner("in", "out", cutoff).run()
+    var th = new Thread(new TestRunner("in", "out", cutoff))
+    th.start()
   } catch {
     case e :IOException => e.printStackTrace()
   }
