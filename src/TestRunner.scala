@@ -13,6 +13,7 @@ import javax.imageio.ImageIO
 class TestRunner(val input: String, val output: String, val cutoff: Int) extends Runnable {
 
   private val inputDir: File = new File(input)
+  private var accepted: Int = 0
 
   // only files with specified extensions will be added to the list
   private val images: List[File] = inputDir.listFiles.filter(x =>
@@ -26,12 +27,15 @@ class TestRunner(val input: String, val output: String, val cutoff: Int) extends
     println(Thread.currentThread().getName +
       " is running.")
     images.foreach(process)
+
+    println(accepted + " out of " + images.size + " images were accepted by the algorithm.")
   }
 
   // method calculates a score of given file and saves renamed copy to the output directory
   private def process(file: File): Unit = {
     val img: BufferedImage = ImageIO.read(file)
     val score = ImageTest1b(img).score()
+    if(score < cutoff) accepted += 1
 
     println(renameFile(file, score).getName)
 
